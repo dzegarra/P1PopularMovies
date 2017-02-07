@@ -7,32 +7,27 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
-    MenuItem mRating;
-    MenuItem mPopular;
     Spinner mSortOptions;
     Toolbar mToolbar;
+    ProgressBar mPbar;
 
     static final int COLUMNS = 2;
     static final String URL_POPULAR = "http://api.themoviedb.org/3/movie/popular";
+    static final String URL_RATING = "http://api.themoviedb.org/3/movie/top_rated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,31 +35,43 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mPbar = (ProgressBar) findViewById(R.id.progress_bar);
+        mSortOptions = (Spinner) findViewById(R.id.sort_options);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_container);
+
         setSupportActionBar(mToolbar);
 
         //Spinner stuff
-        ArrayAdapter<CharSequence> dataAdapter = ArrayAdapter.createFromResource(this, R.array.sort_options, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> dataAdapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_options, android.R.layout.simple_spinner_item);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSortOptions = (Spinner) findViewById(R.id.sort_options);
         mSortOptions.setAdapter(dataAdapter);
+        mSortOptions.setOnItemSelectedListener(new SortSelectionListener());
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.rv_container);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager layout = new GridLayoutManager(this, COLUMNS, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layout);
 
-        new FetchCatalogTask().execute(URL_POPULAR);
+        loadMovies(true);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+    void loadMovies(Boolean popular) {
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mPbar.setVisibility(View.VISIBLE);
+        new FetchCatalogTask().execute(popular ? URL_POPULAR : URL_RATING);
     }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        
+    public class SortSelectionListener implements AdapterView.OnItemSelectedListener {
+
+        @Override
+        public void onItemSelected(AdapterView parent, View view, int position, long id) {
+            loadMovies(position==0);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView parent) {}
+
     }
 
     public class FetchCatalogTask extends AsyncTask<String, Void, MovieModel[]> {
@@ -86,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             super.onPostExecute(movieModels);
             MovieAdapter adapter = new MovieAdapter(movieModels);
             mRecyclerView.setAdapter(adapter);
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mPbar.setVisibility(View.INVISIBLE);
         }
     }
 
