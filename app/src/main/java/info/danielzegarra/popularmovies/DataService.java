@@ -15,7 +15,10 @@ import java.util.Scanner;
 
 public class DataService {
 
-    static final String API_KEY = "7b358d0c7976c773bee5b2831e7c9866";
+    /**
+     * TODO Themoviedb.org APIKEY HERE!
+     */
+    static final String API_KEY = "";
 
     static JSONObject loadData(String urlStr) throws IOException, JSONException {
         URL url = buildUrl(urlStr);
