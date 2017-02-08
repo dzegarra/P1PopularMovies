@@ -18,7 +18,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     RecyclerView mRecyclerView;
     Spinner mSortOptions;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 R.array.sort_options, android.R.layout.simple_spinner_item);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSortOptions.setAdapter(dataAdapter);
-        mSortOptions.setOnItemSelectedListener(new SortSelectionListener());
+        mSortOptions.setOnItemSelectedListener(this);
 
         mRecyclerView.setHasFixedSize(true);
 
@@ -62,17 +62,16 @@ public class MainActivity extends AppCompatActivity {
         new FetchCatalogTask().execute(popular ? URL_POPULAR : URL_RATING);
     }
 
-    public class SortSelectionListener implements AdapterView.OnItemSelectedListener {
 
-        @Override
-        public void onItemSelected(AdapterView parent, View view, int position, long id) {
-            loadMovies(position==0);
-        }
 
-        @Override
-        public void onNothingSelected(AdapterView parent) {}
-
+    @Override
+    public void onItemSelected(AdapterView parent, View view, int position, long id) {
+        loadMovies(position==0);
     }
+
+    @Override
+    public void onNothingSelected(AdapterView parent) {}
+
 
     public class FetchCatalogTask extends AsyncTask<String, Void, MovieModel[]> {
 

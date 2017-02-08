@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">PopularMovies</string>
+    <string name="go_back">Back</string>
+    <string name="average_votes">Average votes:</string>
     <string-array name="sort_options">
         <item>by Rating</item>
         <item>by Popularity</item>
