@@ -1,5 +1,7 @@
 package info.danielzegarra.popularmovies;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,4 +58,15 @@ public class DataService {
         return rows;
     }
 
+    static boolean checkInternetConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        // test for connection
+        if (cm.getActiveNetworkInfo() != null
+                && cm.getActiveNetworkInfo().isAvailable()
+                && cm.getActiveNetworkInfo().isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

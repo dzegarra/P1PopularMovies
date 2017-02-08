@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Spinner mSortOptions;
     Toolbar mToolbar;
     ProgressBar mPbar;
+    TextView mInternetError;
 
     static final int COLUMNS = 2;
     static final String URL_POPULAR = "http://api.themoviedb.org/3/movie/popular";
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mPbar = (ProgressBar) findViewById(R.id.progress_bar);
         mSortOptions = (Spinner) findViewById(R.id.sort_options);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_container);
+        mInternetError = (TextView) findViewById(R.id.no_internet_error);
 
         setSupportActionBar(mToolbar);
 
@@ -58,8 +61,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     void loadMovies(Boolean popular) {
         mRecyclerView.setVisibility(View.INVISIBLE);
-        mPbar.setVisibility(View.VISIBLE);
-        new FetchCatalogTask().execute(popular ? URL_POPULAR : URL_RATING);
+        if (DataService.checkInternetConnection(this)) {
+            mPbar.setVisibility(View.VISIBLE);
+            mInternetError.setVisibility(View.INVISIBLE);
+            new FetchCatalogTask().execute(popular ? URL_POPULAR : URL_RATING);
+        } else {
+            mPbar.setVisibility(View.INVISIBLE);
+            mInternetError.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -90,10 +99,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         @Override
         protected void onPostExecute(MovieModel[] movieModels) {
             super.onPostExecute(movieModels);
-            MovieAdapter adapter = new MovieAdapter(movieModels);
-            mRecyclerView.setAdapter(adapter);
-            mRecyclerView.setVisibility(View.VISIBLE);
-            mPbar.setVisibility(View.INVISIBLE);
+            if (movieModels.length > 0) {
+                MovieAdapter adapter = new MovieAdapter(movieModels);
+                mRecyclerView.setAdapter(adapter);
+                mRecyclerView.setVisibility(View.VISIBLE);
+                mPbar.setVisibility(View.INVISIBLE);
+                mInternetError.setVisibility(View.INVISIBLE);
+            } else {
+                mRecyclerView.setVisibility(View.INVISIBLE);
+                mPbar.setVisibility(View.INVISIBLE);
+                mInternetError.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 

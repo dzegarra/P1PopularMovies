@@ -29,7 +29,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         void bind(MovieModel model) {
             movie = model;
             Picasso.with(context).load(movie.getPosterUrl()).into(mCover);
-            //mTitle.setText(movie.title);
         }
 
         @Override
@@ -53,7 +52,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        System.out.println("creando");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.movie_cover, parent, false);
         return new ViewHolder(view);
