@@ -15,62 +15,70 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/movie_detail_image"
-                android:layout_width="185dp"
-                android:layout_height="277dp"/>
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="16dp">
-                <TextView
-                    android:id="@+id/movie_detail_title"
-                    style="@style/Base.TextAppearance.AppCompat.Headline"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content" />
-
-                <RatingBar
-                    android:id="@+id/movie_detail_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.AppCompat.RatingBar.Small"
-                    android:numStars="5" />
-                <TextView
-                    android:id="@+id/movie_detail_votes"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content" />
-
-                <TextView
-                    android:id="@+id/movie_detail_releasedate"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    style="@style/Base.TextAppearance.AppCompat.Body1"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="16dp">
+            android:padding="16dp">
+
+            <!-- Cover and main properties of the movie -->
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/movie_detail_image"
+                    android:layout_width="185dp"
+                    android:layout_height="277dp"/>
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="16dp">
+                    <TextView
+                        android:id="@+id/movie_detail_title"
+                        style="@style/Base.TextAppearance.AppCompat.Headline"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" />
+
+                    <RatingBar
+                        android:id="@+id/movie_detail_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:numStars="5" />
+                    <TextView
+                        android:id="@+id/movie_detail_votes"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/movie_detail_releasedate"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style="@style/Base.TextAppearance.AppCompat.Body1"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Synopsis of the movie -->
             <TextView
                 android:id="@+id/movie_detail_overview"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:textSize="18sp" />
-        </ScrollView>
+                android:textSize="18sp"
+                android:layout_marginTop="18dp" />
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

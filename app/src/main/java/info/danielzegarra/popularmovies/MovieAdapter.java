@@ -2,17 +2,13 @@ package info.danielzegarra.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Movie;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.zip.Inflater;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -28,7 +24,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         }
         void bind(MovieModel model) {
             movie = model;
-            Picasso.with(context).load(movie.getPosterUrl()).into(mCover);
+            Picasso.with(context)
+                    .load(movie.getPosterUrl())
+                    .placeholder(R.drawable.image)
+                    .error(R.drawable.denied)
+                    .into(mCover);
         }
 
         @Override

@@ -1,5 +1,6 @@
 package info.danielzegarra.popularmovies;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     ProgressBar mPbar;
     TextView mInternetError;
 
-    static final int COLUMNS = 2;
     static final String URL_POPULAR = "http://api.themoviedb.org/3/movie/popular";
     static final String URL_RATING = "http://api.themoviedb.org/3/movie/top_rated";
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mRecyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layout = new GridLayoutManager(this, COLUMNS, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layout = new GridLayoutManager(this, calculateNoOfColumns(this), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layout);
 
         loadMovies(true);
@@ -69,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             mPbar.setVisibility(View.INVISIBLE);
             mInternetError.setVisibility(View.VISIBLE);
         }
+    }
+
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int cols = (int) (dpWidth / 180);
+        return cols;
     }
 
 
